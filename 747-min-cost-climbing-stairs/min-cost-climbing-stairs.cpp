@@ -1,19 +1,17 @@
 class Solution {
 public:
-    int minCostClimbingStairs(vector<int>& cost) {
+    unordered_map<int,int> mp;
+    int solve(vector<int>& cost,int i){
         int n = cost.size();
-
-        int* dp = new int[n + 2]; // protects from out-of-bounds access
-
-        // Base cases
-        dp[n] = 0;
-        dp[n + 1] = 0;
-
-        // Fill dp
-        for (int i = n - 1; i >= 0; i--) {
-            dp[i] = cost[i] + min(dp[i + 1], dp[i + 2]);
+        if(i>=n) return 0;
+        if(mp.find(i) != mp.end()){
+            return mp[i];
         }
+        return mp[i] = cost[i] + min(solve(cost,i+1),solve(cost,i+2));
+        
+    }
+    int minCostClimbingStairs(vector<int>& cost) {
 
-        return min(dp[0], dp[1]);
+        return min(solve(cost,0),solve(cost,1));
     }
 };
